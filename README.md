@@ -48,20 +48,20 @@ SELECT COUNT(*) AS total_requests FROM web_logs;
 ```
 **2. Analyze HTTP Status Codes**
 ```bash
-SELECT status, COUNT(*) AS count FROM web_server_logs GROUP BY status ORDER BY count DESC;
+SELECT status, COUNT(*) AS count FROM web_logs GROUP BY status ORDER BY count DESC;
 ```
 **3. Identify Most Visited Pages**
 ```bash
-SELECT url, COUNT(*) AS visits FROM web_server_logs GROUP BY url ORDER BY visits DESC LIMIT 3;
+SELECT url, COUNT(*) AS visits FROM web_logs GROUP BY url ORDER BY visits DESC LIMIT 3;
 ```
 **4. Traffic Source Analysis**
 ```bash
-SELECT user_agent, COUNT(*) AS count FROM web_server_logs GROUP BY user_agent ORDER BY count DESC;
+SELECT user_agent, COUNT(*) AS count FROM web_logs GROUP BY user_agent ORDER BY count DESC;
 ```
 **5. Detect Suspicious Activity**
 ```bash
 SELECT ip, COUNT(*) AS failed_requests
-FROM web_server_logs
+FROM web_logs
 WHERE status IN (404, 500)
 GROUP BY ip
 HAVING failed_requests > 3;
@@ -69,7 +69,7 @@ HAVING failed_requests > 3;
 **6. Analyze Traffic Trends**
 ```bash
 SELECT SUBSTR(`timestamp`, 0, 16) AS minute, COUNT(*) AS request_count
-FROM web_server_logs
+FROM web_logs
 GROUP BY SUBSTR(`timestamp`, 0, 16)
 ORDER BY minute;
 ```
@@ -124,7 +124,7 @@ HAVING failed_requests > 3;
 ```bash
 INSERT OVERWRITE DIRECTORY '/user/hive/output/Traffic_Trend_Over_Time'
 SELECT SUBSTR(`timestamp`, 0, 16) AS minute, COUNT(*) AS request_count
-FROM web_server_logs
+FROM web_logs
 GROUP BY SUBSTR(`timestamp`, 0, 16)
 ORDER BY minute;
 ```
