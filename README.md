@@ -87,6 +87,12 @@ ROW FORMAT DELIMITED
 FIELDS TERMINATED BY ','
 STORED AS TEXTFILE;
 ```
+```bash
+SET hive.exec.dynamic.partition.mode=non-strict;
+INSERT OVERWRITE TABLE web_logs_partitioned PARTITION (status)
+SELECT ip, `timestamp`, url, user_agent, status FROM web_logs;
+```
+
 # Step 5: Export Query Results #
 **Save total request count to HDFS:**
 ```bash
@@ -97,7 +103,7 @@ SELECT COUNT(*) FROM web_logs;
 **Save Status Code Analysis to HDFS:**
 ```bash
 INSERT OVERWRITE DIRECTORY '/user/hive/output/Status_Code_Analysis'
-ELECT status, COUNT(*) AS count FROM web_logs GROUP BY status ORDER BY count DESC;
+SELECT status, COUNT(*) AS count FROM web_logs GROUP BY status ORDER BY count DESC;
 ```
 **Save Most Visited Pages to HDFS:**
 ```bash
@@ -132,7 +138,7 @@ ORDER BY minute;
 **Save Partitioning to HDFS:**
 ```bash
 INSERT OVERWRITE DIRECTORY '/user/hive/output/Partitioning'
-SELECT ip, timestamp, url, user_agent, status FROM web_logs;
+SELECT ip, `timestamp`, url, user_agent, status FROM web_logs;
 ```
 
 ### 6. **Setup HDFS**
@@ -174,7 +180,7 @@ pwd
 ## Sample Input and Expected Output ##
 **Sample Log Entries**
 ```bash
-ip,timestamp,url,status,user_agent
+ip,`timestamp`,url,status,user_agent
 192.168.1.1,2024-02-01 10:15:00,/home,200,Mozilla/5.0
 192.168.1.2,2024-02-01 10:16:00,/products,200,Chrome/90.0
 192.168.1.3,2024-02-01 10:17:00,/checkout,404,Safari/13.1
