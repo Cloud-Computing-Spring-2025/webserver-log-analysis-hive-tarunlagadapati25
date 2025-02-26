@@ -167,6 +167,50 @@ pwd
 
 **Hive Table Syncing:** Used MSCK REPAIR TABLE to refresh partitions dynamically.
 
+## Sample Input and Expected Output ##
+**Sample Log Entries**
+```bash
+ip,timestamp,url,status,user_agent
+192.168.1.1,2024-02-01 10:15:00,/home,200,Mozilla/5.0
+192.168.1.2,2024-02-01 10:16:00,/products,200,Chrome/90.0
+192.168.1.3,2024-02-01 10:17:00,/checkout,404,Safari/13.1
+192.168.1.10,2024-02-01 10:18:00,/home,500,Mozilla/5.0
+192.168.1.15,2024-02-01 10:19:00,/products,404,Chrome/90.0
+```
+
+## Expected Query Results ##
+**Total Requests**
+```bash
+Total Requests: 100
+```
+**Status Code Analysis**
+```bash
+200: 80
+404: 10
+500: 10
+```
+**Most Visited Pages**
+```bash
+/home: 50
+/products: 30
+/checkout: 20
+```
+**Traffic Source Analysis**
+```bash
+Mozilla/5.0: 60
+Chrome/90.0: 30
+Safari/13.1: 10
+```
+**Suspicious IP Addresses**
+```bash
+192.168.1.10: 5 failed requests
+192.168.1.15: 4 failed requests
+```
+**Traffic Trends**
+```bash
+2024-02-01 10:15: 5 requests
+2024-02-01 10:16: 7 requests
+```
 ## Conclusion ##
  
 This project successfully analyzes web server logs using Apache Hive and optimizes query performance with partitioning. The structured approach ensures efficiency in data processing, making it scalable for large datasets.
