@@ -5,9 +5,13 @@ This project focuses on analyzing web server logs using Apache Hive in a Hadoop 
 The approach follows a structured methodology:
 ## Setting up Hadoop and Hive: Ensuring all services are running.
 **Creating a Hive database and tables:** Defining an external table and a partitioned table.
+
 **Loading data:** Copying CSV logs into HDFS and registering them in Hive.
+
 **Executing queries:** Running analysis tasks with HiveQL.
+
 **Optimizing with partitioning:** Enhancing performance by partitioning data by HTTP status.
+
 **Exporting results:** Saving query outputs for reporting.
 ## Execution Steps
 ### 1. **Start the Hadoop Cluster**
